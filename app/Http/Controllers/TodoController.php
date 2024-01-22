@@ -7,8 +7,18 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function index(){
-        return $result = Todo::orderBy('id','desc')->get();
+    public function index(Request $request)
+    {
+
+        $status = $request->query('status');
+
+        if ($status) {
+            $todos = Todo::where('status', $status)->get();
+        } else {
+            $todos = Todo::all();
+        }
+
+        return response()->json($todos);
     }
 
     public function store(Request $request)
